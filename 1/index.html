@@ -17,11 +17,16 @@
             line-height: 1.6;
         }
 
-        /* DARK THEME (default) */
-        .dark-mode {
-            background-color: #000;
-            color: #0f0; /* Кислотно‑зелёный */
-        }
+        /* DARK THEME (default) — с фоновым изображением */
+.dark-mode {
+    background-image: url('https://github.com/ort22334-alt/Fakk120-0/blob/main/1/Lucid_Origin_The_image_should_be_a_square_black_background_wit_0.jpg'); /* Укажите путь к изображению */
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #0f0; /* Кислотно‑зелёный текст */
+}
+
 
             .dark-mode header {
                 background-color: #111;
@@ -258,3 +263,4 @@
                 <input type="url" name="trailerUrl">
             </label>
             <button type="submit">Добавить игру
+
