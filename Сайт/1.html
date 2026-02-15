@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Игровой каталог</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+    <header>
+        <h1>Игровой каталог</h1>
+        <button id="theme-toggle" class="btn-theme">Дневной режим</button>
+    </header>
+
+    <section id="add-game-form" class="form-container">
+        <h2>Добавить игру</h2>
+        <form id="game-form">
+            <label>
+                Название:
+                <input type="text" name="title" required>
+            </label>
+            <label>
+                Описание:
+                <textarea name="description" rows="3" required></textarea>
+            </label>
+            <label>
+                Минимальные требования:
+                <input type="text" name="minRequirements" required>
+            </label>
+            <label>
+                Рекомендуемые требования:
+                <input type="text" name="recommendedRequirements" required>
+            </label>
+            <label>
+                Оценка (1–10):
+                <input type="number" name="rating" min="1" max="10" required>
+            </label>
+            <label>
+                Ссылка на скачивание:
+                <input type="url" name="downloadLink" required>
+            </label>
+            <label>
+                Трейлер (ссылка):
+                <input type="url" name="trailerLink">
+            </label>
+            <label>
+                Обложка (изображение):
+                <input type="file" name="image" accept="image/*">
+            </label>
+            <button type="submit">Добавить игру</button>
+        </form>
+    </section>
+
+    <main id="game-list">
+        <!-- Карточки игр будут вставляться сюда -->
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
