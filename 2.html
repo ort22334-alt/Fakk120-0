@@ -1,452 +1,298 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Игровой каталог</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #000;
-            color: #0f0;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-            body.light-mode {
-                background: #fff;
-                color: #333;
-            }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            background: #111;
-        }
-
-        body.light-mode header {
-            background: #eee;
-        }
-
-        #search, #theme-toggle {
-            width: 80%;
-            max-width: 500px;
-            margin: 10px auto;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #0f0;
-            background: #222;
-            color: #0f0;
-            font-size: 1rem;
-            display: block;
-            box-sizing: border-box;
-        }
-
-        body.light-mode #search, body.light-mode #theme-toggle {
-            border-color: #ccc;
-            background: #fff;
-            color: #333;
-        }
-
-        #theme-toggle {
-            cursor: pointer;
-        }
-
-        #game-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
-            gap: 20px;
-            padding: 15px 20px;
-        }
-
-        .game-card {
-            background: #111;
-            border: 1px solid #0f0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,255,0,0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        body.light-mode .game-card {
-            background: #f9f9f9;
-            border-color: #888;
-            color: #333;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0,255,0,0.6);
-        }
-
-        .game-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #000 center/cover no-repeat;
-        }
-
-        .game-content {
-            padding: 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #ff69b4;
-        }
-
-        body.light-mode .game-title {
-            color: purple;
-        }
-
-        .game-description {
-            flex-grow: 1;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .game-rating {
-            font-weight: 700;
-            color: #ff0;
-            margin-bottom: 10px;
-        }
-
-        body.light-mode .game-rating {
-            color: #cc0;
-        }
-
-        .game-requirements {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .game-links {
-            margin-top: auto;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: #0f0;
-            color: #000;
-            border: none;
-            padding: 10px 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            flex: 1;
-        }
-
-            .btn:hover {
-                background-color: #070;
-                color: #afa;
-            }
-
-        body.light-mode .btn {
-            background-color: purple;
-            color: #fff;
-        }
-
-            body.light-mode .btn:hover {
-                background-color: #550055;
-                color: #ddd;
-            }
-
-        .form-container {
-            max-width: 600px;
-            margin: 20px auto 40px;
-            padding: 20px;
-            background-color: #111;
-            border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(0, 255, 0, 0.3);
-            color: #0f0;
-        }
-
-        body.light-mode .form-container {
-            background-color: #f0f0f0;
-            color: #333;
-            box-shadow: 0 4px 14px rgba(128, 0, 128, 0.3);
-        }
-
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #f0f;
-        }
-
-        body.light-mode .form-container h2 {
-            color: purple;
-        }
-
-        #game-form {
-            display: grid;
-            gap: 15px;
-        }
-
-        label {
-            display: flex;
-            flex-direction: column;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        input, textarea {
-            margin-top: 5px;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #0f0;
-            background: #222;
-            color: #0f0;
-            font-size: 1rem;
-            resize: vertical;
-        }
-
-        body.light-mode input, body.light-mode textarea {
-            border: 1px solid #888;
-            background: #fff;
-            color: #333;
-        }
-
-        button[type=submit] {
-            margin-top: 10px;
-            background: #0f0;
-            border: none;
-            color: #000;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            padding: 12px 20px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-            button[type=submit]:hover {
-                background: #000;
-                color: #0f0;
-                border: 1px solid #0f0;
-            }
-
-        body.light-mode button[type=submit] {
-            background: purple;
-            color: #fff;
-        }
-
-            body.light-mode button[type=submit]:hover {
-                background: #550055;
-                color: #ddd;
-                border: none;
-            }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Игровой каталог</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0; padding: 0; background: #000; color: #0f0;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.light-mode {
+    background: #fff; color: #333;
+  }
+  header {
+    text-align: center; padding: 20px; background: #111;
+  }
+  body.light-mode header {
+    background: #eee;
+  }
+  #search, #theme-toggle {
+    width: 80%; max-width: 500px; margin: 10px auto; padding: 12px; border-radius: 8px;
+    border: 1px solid #0f0; background: #222; color: #0f0; font-size: 1rem;
+    display: block; box-sizing: border-box;
+  }
+  #search:focus, #theme-toggle:focus {
+    outline: 2px solid #0f0;
+  }
+  #game-form {
+    width: 80%; max-width: 600px; margin: 20px auto;
+    background: #111; padding: 15px; border-radius: 8px;
+  }
+  label {
+    display: block; margin-top: 10px; font-weight: bold;
+  }
+  input[type=text], input[type=number] {
+    width: 100%; padding: 8px; margin-top: 4px; border-radius: 4px;
+    border: 1px solid #0f0; background: #222; color: #0f0; box-sizing: border-box;
+  }
+  button {
+    margin-top: 15px; padding: 10px 20px; border: none; border-radius: 6px;
+    background: #0f0; color: #000; font-weight: bold; cursor: pointer;
+  }
+  button:hover {
+    background: #0c0; /* чуть темнее */
+  }
+  #game-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px; padding: 20px;
+  }
+  .game-card {
+    display: flex; flex-direction: column; background: #111; border-radius: 8px;
+    overflow: hidden; color: inherit; transition: all 0.2s;
+  }
+  .game-card img {
+    width: 100%; height: auto; display: block;
+  }
+  .game-content {
+    padding: 10px;
+  }
+  .game-title {
+    font-size: 1.2em; font-weight: bold; margin: 5px 0;
+  }
+  .game-description, .game-rating, .game-requirements {
+    font-size: 0.9em; margin: 5px 0;
+  }
+  .game-links {
+    display: flex; gap: 10px; margin-top: 10px;
+  }
+  a.btn {
+    padding: 8px 12px; border-radius: 4px; background: #0f0; color: #000; text-decoration: none; font-weight: bold;
+  }
+  a.btn:hover {
+    background: #0c0;
+  }
+  /* Светлая тема для кнопок */
+  body.light-mode a.btn {
+    background: #08f; color: #fff;
+  }
+  body.light-mode a.btn:hover {
+    background: #06c;
+  }
+</style>
 </head>
-<body class="dark-mode">
+<body>
 
-    <header>
-        <h1>Игровой каталог</h1>
-        <input type="text" id="search" placeholder="Поиск по играм..." aria-label="Поиск по играм" />
-        <button id="theme-toggle" class="btn" aria-pressed="false" aria-label="Переключить тему">Дневной режим</button>
-    </header>
+<header>
+  <h1>Каталог игр</h1>
+  <button id="theme-toggle">Переключить тему</button>
+</header>
 
-    <section class="form-container" aria-label="Форма добавления игры">
-        <h2>Добавить игру</h2>
-        <form id="game-form">
-            <label for="title-input">
-                Название:
-                <input id="title-input" type="text" name="title" required placeholder="Введите название игры" />
-            </label>
-            <label for="description-input">
-                Описание:
-                <textarea id="description-input" name="description" rows="3" required placeholder="Краткое описание"></textarea>
-            </label>
-            <label for="minRequirements-input">
-                Минимальные требования:
-                <input id="minRequirements-input" type="text" name="minRequirements" required placeholder="Пример: 8 ГБ RAM, i5 CPU" />
-            </label>
-            <label for="recommendedRequirements-input">
-                Рекомендуемые требования:
-                <input id="recommendedRequirements-input" type="text" name="recommendedRequirements" required placeholder="Пример: 16 ГБ RAM, i7 CPU" />
-            </label>
-            <label for="rating-input">
-                Оценка (1–10):
-                <input id="rating-input" type="number" min="1" max="10" name="rating" required placeholder="Например 7" />
-            </label>
-            <label for="downloadLink-input">
-                Ссылка на скачивание:
-                <input id="downloadLink-input" type="url" name="downloadLink" required placeholder="https://example.com/download" />
-            </label>
-            <label for="trailerUrl-input">
-                Трейлер (YouTube URL):
-                <input id="trailerUrl-input" type="url" name="trailerUrl" placeholder="https://youtube.com/..." />
-            </label>
-            <button type="submit">Добавить игру</button>
-        </form>
-    </section>
+<input type="text" id="search" placeholder="Поиск по названию..." />
 
-    <section id="game-list" aria-label="Список игр">
-        <!-- Карточки игр появятся здесь -->
-    </section>
+<form id="game-form">
+  <h2>Добавить новую игру</h2>
+  <label for="title-input">Название:</label>
+  <input id="title-input" type="text" required />
+  
+  <label for="description-input">Описание:</label>
+  <input id="description-input" type="text" required />
+  
+  <label for="minRequirements-input">Мин. требования:</label>
+  <input id="minRequirements-input" type="text" required />
+  
+  <label for="recommendedRequirements-input">Рекомендуемые требования:</label>
+  <input id="recommendedRequirements-input" type="text" required />
+  
+  <label for="rating-input">Рейтинг (от 1 до 10):</label>
+  <input id="rating-input" type="number" min="1" max="10" required />
+  
+  <label for="downloadLink-input">Ссылка на скачивание:</label>
+  <input id="downloadLink-input" type="text" required />
+  
+  <label for="trailerUrl-input">Ссылка на трейлер (опционально):</label>
+  <input id="trailerUrl-input" type="text" />
 
-    <script>
-        const bodyEl = document.body;
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const searchInput = document.getElementById('search');
-        const gameListEl = document.getElementById('game-list');
-        const gameForm = document.getElementById('game-form');
+  <button type="submit">Добавить игру</button>
+</form>
 
-        let games = [];
-
-        // Переключение темы
-        themeToggleBtn.addEventListener('click', () => {
-            if (bodyEl.classList.contains('dark-mode')) {
-                bodyEl.classList.remove('dark-mode');
-                bodyEl.classList.add('light-mode');
-                themeToggleBtn.textContent = 'Ночной режим';
-                themeToggleBtn.setAttribute('aria-pressed', 'true');
-            } else {
-                bodyEl.classList.remove('light-mode');
-                bodyEl.classList.add('dark-mode');
-                themeToggleBtn.textContent = 'Дневной режим';
-                themeToggleBtn.setAttribute('aria-pressed', 'false');
-            }
-        });
-
-        // Функция отрисовки карточек игр
-        function renderGames(filter = '') {
-            gameListEl.innerHTML = '';
-            const filteredGames = games.filter(game =>
-                game.title.toLowerCase().includes(filter.toLowerCase())
-            );
-
-            if (filteredGames.length === 0) {
-                gameListEl.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Игры не найдены</p>';
-                return;
-            }
-
-            filteredGames.forEach(game => {
-                // Миниатюрное изображение для примера — если хотите, добавьте поле с URL картинки для каждой игры
-                const imgSrc = game.imageUrl || 'https://via.placeholder.com/300x180?text=Game+Image';
-
-                // Создаём карточку
-                const card = document.createElement('article');
-                card.className = 'game-card';
-
-                card.innerHTML = `
-            <img class="game-image" src="${imgSrc}" alt="Изображение игры ${escapeHTML(game.title)}" />
-            <div class="game-content">
-              <div class="game-title">${escapeHTML(game.title)}</div>
-              <!-- Продолжаем после предыдущего кода -->
+<div id="game-list"></div>
 
 <script>
-      // Отрисовка карточки игры
-      function createGameCard(game) {
-        const card = document.createElement('div');
-        card.className = 'game-card';
+  // Объявление переменных
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const body = document.body;
+  const searchInput = document.getElementById('search');
+  const gameForm = document.getElementById('game-form');
+  const gameListEl = document.getElementById('game-list');
 
-        // Фото игры (может быть placeholder, если нет фото)
-        const img = document.createElement('img');
-        img.className = 'game-image';
-        img.src = game.photoUrl || 'https://via.placeholder.com/300x180?text=Нет+фото';
-        img.alt = game.title;
+  let games = [];
 
-        // Контент игры
-        const content = document.createElement('div');
-        content.className = 'game-content';
+  // Функция escapeHTML для защиты от XSS
+  function escapeHTML(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
-        // Название
-        const title = document.createElement('div');
-        title.className = 'game-title';
-        title.textContent = game.title;
+  // Переключение темы
+  themeToggleBtn.addEventListener('click', () => {
+    body.classList.toggle('light-mode');
+  });
 
-        // Описание
-        const description = document.createElement('div');
-        description.className = 'game-description';
-        description.textContent = game.description;
-
-        // Рейтинг
-        const rating = document.createElement('div');
-        rating.className = 'game-rating';
-        rating.textContent = `Рейтинг: ${ game.rating } `;
-
-        // Требования
-        const req = document.createElement('div');
-        req.className = 'game-requirements';
-        req.innerHTML = `< strong > Мин.требования:</strong > ${ game.minRequirements }<br />
-                         <strong>Рекомендуемые требования:</strong> ${ game.recommendedRequirements } `;
-
-        // Кнопки скачивания и трейлера
-        const linksDiv = document.createElement('div');
-        linksDiv.className = 'game-links';
-
-        const downloadBtn = document.createElement('a');
-        downloadBtn.className = 'btn';
-        downloadBtn.href = game.downloadLink;
-        downloadBtn.target = '_blank';
-        downloadBtn.rel = 'noopener noreferrer';
-        downloadBtn.textContent = 'Скачать';
-
-        linksDiv.appendChild(downloadBtn);
-
-        if (game.trailerUrl) {
-          const trailerBtn = document.createElement('a');
-          trailerBtn.className = 'btn';
-          trailerBtn.href = game.trailerUrl;
-          trailerBtn.target = '_blank';
-          trailerBtn.rel = 'noopener noreferrer';
-          trailerBtn.textContent = 'Трейлер';
-          linksDiv.appendChild(trailerBtn);
-        }
-
-        // Собираем карточку
-        content.appendChild(title);
-        content.appendChild(description);
-        content.appendChild(rating);
-        content.appendChild(req);
-        content.appendChild(linksDiv);
-
-        card.appendChild(img);
-        card.appendChild(content);
-
-        return card;
+  // Загрузка игр из localStorage
+  function loadGames() {
+    const saved = localStorage.getItem('games');
+    if (saved) {
+      try {
+        games = JSON.parse(saved);
+      } catch {
+        games = [];
       }
+    }
+  }
 
-      // Обработчик формы добавления
-      gameForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+  // Сохранение в localStorage
+  function saveGames() {
+    localStorage.setItem('games', JSON.stringify(games));
+  }
 
-        const newGame = {
-          title: document.getElementById('title-input').value.trim(),
-          description: document.getElementById('description-input').value.trim(),
-          minRequirements: document.getElementById('minRequirements-input').value.trim(),
-          recommendedRequirements: document.getElementById('recommendedRequirements-input').value.trim(),
-          rating: document.getElementById('rating-input').value.trim(),
-          downloadLink: document.getElementById('downloadLink-input').value.trim(),
-          trailerUrl: document.getElementById('trailerUrl-input').value.trim(),
-          photoUrl: '' // Можно добавить поле для фото
-        };
+  // Создание карточки игры
+  function createGameCard(game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
 
-        games.push(newGame);
-        renderGames(searchInput.value);
-        gameForm.reset();
-      });
+    const img = document.createElement('img');
+    img.src = game.photoUrl || 'https://via.placeholder.com/300x180.png?text=Нет+фото';
+    img.alt = escapeHTML(game.title);
 
-      // Обработчик поиска
-      searchInput.addEventListener('input', () => {
-        renderGames(searchInput.value);
-      });
+    const content = document.createElement('div');
+    content.className = 'game-content';
 
-      // Изначально отображаем всё
-      renderGames();
+    const title = document.createElement('div');
+    title.className = 'game-title';
+    title.innerHTML = escapeHTML(game.title);
 
-    </script>
+    const description = document.createElement('div');
+    description.className = 'game-description';
+    description.innerHTML = escapeHTML(game.description);
+
+    const rating = document.createElement('div');
+    rating.className = 'game-rating';
+    rating.innerHTML = `Рейтинг: ${escapeHTML(game.rating)}`;
+
+    const req = document.createElement('div');
+    req.className = 'game-requirements';
+    req.innerHTML = `
+      <strong>Мин.требования:</strong> ${escapeHTML(game.minRequirements)}<br />
+      <strong>Рекомендуемые требования:</strong> ${escapeHTML(game.recommendedRequirements)}
+    `;
+
+    const linksDiv = document.createElement('div');
+    linksDiv.className = 'game-links';
+
+    const downloadBtn = document.createElement('a');
+    downloadBtn.className = 'btn';
+    downloadBtn.href = game.downloadLink;
+    downloadBtn.target = '_blank';
+    downloadBtn.rel = 'noopener noreferrer';
+    downloadBtn.textContent = 'Скачать';
+
+    linksDiv.appendChild(downloadBtn);
+
+    if (game.trailerUrl && game.trailerUrl.trim() !== '') {
+      const trailerBtn = document.createElement('a');
+      trailerBtn.className = 'btn';
+      trailerBtn.href = game.trailerUrl;
+      trailerBtn.target = '_blank';
+      trailerBtn.rel = 'noopener noreferrer';
+      trailerBtn.textContent = 'Трейлер';
+      linksDiv.appendChild(trailerBtn);
+    }
+
+    content.appendChild(title);
+    content.appendChild(description);
+    content.appendChild(rating);
+    content.appendChild(req);
+    content.appendChild(linksDiv);
+
+    card.appendChild(img);
+    card.appendChild(content);
+
+    return card;
+  }
+
+  // Отрисовка игр по фильтру
+  function renderGames(filter = '') {
+    gameListEl.innerHTML = '';
+    const filteredGames = games.filter(game =>
+      game.title.toLowerCase().includes(filter.toLowerCase())
+    );
+    if (filteredGames.length === 0) {
+      gameListEl.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Игры не найдены</p>';
+      return;
+    }
+
+    filteredGames.forEach(game => {
+      const card = createGameCard(game);
+      gameListEl.appendChild(card);
+    });
+  }
+
+  // Инициализация: загрузка и отображение
+  loadGames();
+  renderGames();
+
+  // Обработчик формы
+  gameForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById('title-input').value.trim();
+    const description = document.getElementById('description-input').value.trim();
+    const minReq = document.getElementById('minRequirements-input').value.trim();
+    const recReq = document.getElementById('recommendedRequirements-input').value.trim();
+    const ratingStr = document.getElementById('rating-input').value.trim();
+    const downloadLink = document.getElementById('downloadLink-input').value.trim();
+    const trailerUrl = document.getElementById('trailerUrl-input').value.trim();
+
+    // Валидация
+    const rating = parseInt(ratingStr, 10);
+    if (isNaN(rating) || rating < 1 || rating > 10) {
+      alert('Рейтинг должен быть числом от 1 до 10');
+      return;
+    }
+
+    if (!title || !description || !minReq || !recReq || !downloadLink) {
+      alert('Пожалуйста, заполните все обязательные поля');
+      return;
+    }
+
+    const newGame = {
+      title,
+      description,
+      minRequirements: minReq,
+      recommendedRequirements: recReq,
+      rating,
+      downloadLink,
+      trailerUrl,
+      photoUrl: '' // Можно добавить поле или оставить пустым
+    };
+
+    games.push(newGame);
+    saveGames();
+    renderGames(searchInput.value);
+    gameForm.reset();
+  });
+
+  // Обработка поиска
+  searchInput.addEventListener('input', () => {
+    renderGames(searchInput.value);
+  });
+</script>
 </body>
 </html>
