@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Игровой каталог</title>
+    <style>
+        /* BASIC STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        /* DARK THEME (default) */
+        .dark-mode {
+            background-color: #000;
+            color: #0f0; /* Кислотно‑зелёный */
+        }
+
+            .dark-mode header {
+                background-color: #111;
+            }
+
+            .dark-mode #search,
+            .dark-mode .form-container input,
+            .dark-mode .form-container textarea {
+                background-color: #222;
+                border-color: #0f0;
+                color: #0f0;
+            }
+
+            .dark-mode .game-card {
+                background-color: #111;
+                border: 1px solid #0f0;
+            }
+
+            .dark-mode .game-title {
+                color: #f0f; /* Кислотно‑розовый */
+            }
+
+            .dark-mode .game-rating {
+                color: #ff0; /* Кислотно‑жёлтый */
+            }
+
+            .dark-mode .btn {
+                background-color: #0f0;
+                color: #000;
+            }
+
+        /* LIGHT THEME */
+        .light-mode {
+            background-color: #fff;
+            color: #333;
+        }
+
+            .light-mode header {
+                background-color: #eee;
+            }
+
+            .light-mode #search,
+            .light-mode .form-container input,
+            .light-mode .form-container textarea {
+                background-color: #fff;
+                border-color: #ccc;
+                color: #333;
+            }
+
+            .light-mode .game-card {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+            }
+
+            .light-mode .game-title {
+                color: #800080;
+            }
+
+            .light-mode .game-rating {
+                color: #cc0;
+            }
+
+            .light-mode .btn {
+                background-color: #800080;
+                color: #fff;
+            }
+
+        /* LAYOUT */
+        header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #search, #theme-toggle {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+            max-width: 500px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        #theme-toggle {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            cursor: pointer;
+        }
+
+        #game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .game-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .game-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 24px rgba(0, 255, 0, 0.4);
+            }
+
+            .game-card img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+            }
+
+        .game-content {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .game-rating {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);
+        }
+
+            .form-container h2 {
+                color: #f0f;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        #game-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+            #game-form label {
+                display: block;
+                color: #e0e0e0;
+                font-weight: bold;
+            }
+
+            #game-form input,
+            #game-form textarea {
+                width: 100%;
+                padding: 10px;
+                border-radius: 6px;
+                border: 1px solid #0f0;
+                background-color: #2a2a2a;
+                color: #0f0;
+                font-size: 1rem;
+            }
+
+            #game-form button {
+                background-color: #0f0;
+                color: #000;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 1.1rem;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+                #game-form button:hover {
+                    background-color: #000;
+                    color: #0f0;
+                    border: 1px solid #0f0;
+                }
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <h1>Игровой каталог</h1>
+        <input type="text" id="search" placeholder="Поиск по играм...">
+        <button id="theme-toggle" class="btn">Дневной режим</button>
+    </header>
+
+    <section id="add-game-form" class="form-container">
+        <h2>Добавить игру</h2>
+        <form id="game-form">
+            <label>
+                Название:
+                <input type="text" name="title" required>
+            </label>
+            <label>
+                Описание:
+                <textarea name="description" rows="3" required></textarea>
+            </label>
+            <label>
+                Минимальные требования:
+                <input type="text" name="minRequirements" required>
+            </label>
+            <label>
+                Рекомендуемые требования:
+                <input type="text" name="recommendedRequirements" required>
+            </label>
+            <label>
+                Оценка (1–10):
+                <input type="number" name="rating" min="1" max="10" required>
+            </label>
+            <label>
+                Ссылка на скачивание:
+                <input type="url" name="downloadLink" required>
+            </label>
+            <label>
+                Трейлер (YouTube URL):
+                <input type="url" name="trailerUrl">
+            </label>
+            <button type="submit">Добавить игру
